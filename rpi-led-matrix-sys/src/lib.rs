@@ -19,7 +19,7 @@
 //! ```text
 //! RUSTFLAGS="-L /PATH/TO/LIBSTDC++/DIR/" cargo build --features="stdcpp-static-link"
 //! ```
-use libc::{c_char, c_int};
+use libc::{c_char, c_int, uint8_t};
 
 #[cfg(feature = "c-stubs")]
 pub mod c_stubs;
@@ -49,13 +49,14 @@ pub struct CLedMatrixOptions {
     pub scan_mode: c_int,
     pub row_address_type: c_int,
     pub multiplexing: c_int,
-    pub led_rgb_sequence: *mut c_char,
-    pub pixel_mapper_config: *mut c_char,
-    pub panel_type: *mut c_char,
     pub disable_hardware_pulsing: c_char,
     pub show_refresh_rate: c_char,
     pub inverse_colors: c_char,
+    pub led_rgb_sequence: *mut c_char,
+    pub pixel_mapper_config: *mut c_char,
+    pub panel_type: *mut c_char,
     pub limit_refresh_rate_hz: c_int,
+    pub disable_busy_waiting: c_char,
 }
 
 /// The Rust representation of [`CLedRuntimeOptions`], which contains parameters to specify
@@ -67,6 +68,8 @@ pub struct CLedRuntimeOptions {
     pub daemon: c_int,
     pub drop_privileges: c_int,
     pub do_gpio_init: bool,
+    pub drop_priv_user: *mut c_char,
+    pub drop_priv_group: *mut c_char,
 }
 
 #[cfg_attr(not(feature = "c-stubs"), link(name = "rgbmatrixsys"))]

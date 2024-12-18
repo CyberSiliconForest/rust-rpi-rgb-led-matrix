@@ -35,8 +35,8 @@ impl LedMatrixOptions {
             chain_length: 1,
             parallel: 1,
             pwm_bits: 11,
-            pwm_lsb_nanoseconds: 1000,
-            pwm_dither_bits: 1,
+            pwm_lsb_nanoseconds: 130,
+            pwm_dither_bits: 0,
             brightness: 100,
             scan_mode: 0,
             row_address_type: 0,
@@ -44,10 +44,11 @@ impl LedMatrixOptions {
             led_rgb_sequence: CString::new("RGB").unwrap().into_raw(),
             pixel_mapper_config: CString::new("").unwrap().into_raw(),
             panel_type: CString::new("").unwrap().into_raw(),
-            disable_hardware_pulsing: 1,
+            disable_hardware_pulsing: 0,
             show_refresh_rate: 1,
             inverse_colors: 0,
             limit_refresh_rate_hz: 0,
+            disable_busy_waiting: 0,
         })
     }
 
@@ -270,12 +271,14 @@ impl LedRuntimeOptions {
     /// let matrix = LedMatrix::new(None, Some(rt_options)).unwrap();
     /// ```
     #[must_use]
-    pub const fn new() -> Self {
+    pub fn new() -> Self {
         Self(ffi::CLedRuntimeOptions {
             gpio_slowdown: 1,
             daemon: 0,
             drop_privileges: 1,
             do_gpio_init: true,
+            drop_priv_user: CString::new("daemon").unwrap().into_raw(),
+            drop_priv_group: CString::new("daemon").unwrap().into_raw(),
         })
     }
 
